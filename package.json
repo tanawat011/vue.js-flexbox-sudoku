@@ -10,6 +10,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
@@ -46,7 +47,49 @@
       "plugin:vue/essential",
       "@vue/prettier"
     ],
-    "rules": {},
+    "rules": {
+      "array-bracket-spacing": 2,
+      "curly": 2,
+      "import/no-unresolved": "off",
+      "import/order": "off",
+      "import/prefer-default-export": "off",
+      "keyword-spacing": [
+        2,
+        {
+          "before": true,
+          "after": true
+        }
+      ],
+      "no-console": 0,
+      "no-empty-function": 2,
+      "no-irregular-whitespace": "off",
+      "no-mixed-spaces-and-tabs": 0,
+      "object-curly-spacing": 0,
+      "quotes": [
+        2,
+        "single"
+      ],
+      "semi-spacing": [
+        "error",
+        {
+          "before": false,
+          "after": true
+        }
+      ],
+      "space-before-function-paren": 0,
+      "prettier/prettier": "off",
+      "vue/attribute-hyphenation": "off",
+      "vue/component-name-in-template-casing": "off",
+      "vue/html-closing-bracket-newline": "off",
+      "vue/html-closing-bracket-spacing": "off",
+      "vue/html-self-closing": "off",
+      "vue/html-indent": "off",
+      "vue/max-attributes-per-line": "off",
+      "vue/multiline-html-element-content-newline": "off",
+      "vue/no-use-v-if-with-v-for": "off",
+      "vue/require-valid-default-prop": "off",
+      "vue/singleline-html-element-content-newline": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     },
