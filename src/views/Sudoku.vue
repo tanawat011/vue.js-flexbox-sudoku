@@ -2,8 +2,8 @@
     <div>
         <p class="timer">{{ isLoading ? 'Loading...' : `Elapsed Time: ${timer} seconds` }}</p>
         <div class="board">
-            <template v-for="(v, i) in board">
-                <div v-for="(vv, j) in v" :key="`cel-${i}-${j}`" :class="`cell ${isInitialList.length && isInitialList[i][j] ? 'initial' : ''}`"
+            <template v-for="(v, i) in newBoard">
+                <div v-for="(vv, j) in v" :key="`cel-${i}-${j}`" :class="`cell ${initialList.length && initialList[i][j] ? 'initial' : ''}`"
                      @click="clickCelled(i, j)">
                     {{ vv }}
                 </div>
@@ -15,19 +15,28 @@
     </div>
 </template>
 
-<script lang="js">
-  import axios from 'axios'
+<script>
+  import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
-        timer: 0,
         statusText: '',
-        model: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-        board: [],
-        isInitialList: [],
-        isLoading: false,
-        interval: ''
+        interval: '',
+        timer: 0,
+        newBoard: []
+      }
+    },
+    computed: {
+      ...mapGetters({
+        isLoading: 'global/getIsLoading',
+        board: 'global/getBoard',
+        initialList: 'global/getInitialList'
+      })
+    },
+    watch: {
+      board(v) {
+        this.newBoard = v
       }
     },
     mounted() {
@@ -38,21 +47,15 @@
     },
     methods: {
       restartBoard() {
-        this.isLoading = true
-        this.board = this.model
-        axios.get('https://us-central1-skooldio-courses.cloudfunctions.net/react_01/random').then(({ data: board }) => {
-          this.timer = 0
-          this.board = board.board
-          this.isInitialList = board.board.map(v => v.map(vv => vv !== 0))
-          this.isLoading = false
-        })
+        this.timer = 0
+        this.$store.dispatch('global/fetch')
       },
       submit() {
         const isValid = this.validate(this.board)
+        this.statusText = isValid ? 'Board is complete !!' : 'Board is invalid :)'
         if (isValid) {
           clearInterval(this.interval)
         }
-        this.statusText = isValid ? 'Board is complete !!' : 'Board is invalid :)'
       },
       validate(board) {
         let isValid = true
@@ -77,11 +80,11 @@
         return isValid
       },
       clickCelled(i, j) {
-        if (!this.isInitialList[i][j]) {
-          let b = this.board
-          b[i][j] = (this.board[i][j] + 1) % 5
-          this.board = []
-          this.board = b
+        if (!this.initialList[i][j]) {
+          let b = this.newBoard
+          b[i][j] = (this.newBoard[i][j] + 1) % 5
+          this.newBoard = []
+          this.newBoard = b
         }
       }
     }

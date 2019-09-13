@@ -7,10 +7,20 @@
       aliquam ducimus praesentium incidunt quibusdam sequi ? Aliquid rerum
       assumenda accusantium.
     </p>
+    <span>{{ board }}</span>
     <img src="../assets/images/earth-blue-marble.jpg" height="2048" width="2048" alt=""/>
   </div>
 </template>
 
 <script>
-  export default {}
+  export default {
+    data() {
+      return {
+        board: []
+      }
+    },
+    mounted() {
+      this.board = this.$store.getters['global/getBoard']
+    }
+  }
 </script>
